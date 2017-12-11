@@ -1,12 +1,14 @@
 package catalin.coinnews;
 
 import android.accounts.NetworkErrorException;
+import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import org.json.JSONException;
@@ -18,11 +20,12 @@ import catalin.coinnews.models.Coin;
 import catalin.coinnews.services.CoinService;
 import catalin.coinnews.services.CoinServiceImpl;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ListActivity {
 
     private static Context contextOfApplication;
     private Button getCoin;
     private ProgressDialog progressDialog;
+    private ArrayList<Coin> cryptoCoins;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,14 +33,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         contextOfApplication = getApplicationContext();
 
-        getCoin = findViewById(R.id.getCoins);
 
-        getCoin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new getData().execute();
-            }
-        });
+        new getData().execute();
+
+
 
 
     }
@@ -72,6 +71,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(ArrayList<Coin> coins) {
+            cryptoCoins = coins;
+
+            ArrayList<String> coinNames = new ArrayList<String>();
+
+            for(int i=0; i < cryptoCoins.size(); i++) {
+                coinNames.add(cryptoCoins.get(i).getName());
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_expandable_list_item_1, coinNames);
+
+            setListAdapter(adapter);
+
             if (progressDialog != null) {
                 try {
                     progressDialog.dismiss();
