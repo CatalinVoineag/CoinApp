@@ -1,12 +1,15 @@
 package catalin.coinnews;
 
 import android.accounts.NetworkErrorException;
+import android.app.Activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -16,28 +19,27 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import catalin.coinnews.adapters.CoinList;
 import catalin.coinnews.models.Coin;
 import catalin.coinnews.services.CoinService;
 import catalin.coinnews.services.CoinServiceImpl;
 
-public class MainActivity extends ListActivity {
+public class MainActivity extends Activity {
 
     private static Context contextOfApplication;
     private Button getCoin;
     private ProgressDialog progressDialog;
     private ArrayList<Coin> cryptoCoins;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         contextOfApplication = getApplicationContext();
-
+        recyclerView = findViewById(R.id.coinListRecycle);
 
         new getData().execute();
-
-
-
 
     }
 
@@ -73,14 +75,15 @@ public class MainActivity extends ListActivity {
         protected void onPostExecute(ArrayList<Coin> coins) {
             cryptoCoins = coins;
 
-            ArrayList<String> coinNames = new ArrayList<String>();
+            CoinList adapter = new CoinList(contextOfApplication, cryptoCoins);
 
-            for(int i=0; i < cryptoCoins.size(); i++) {
-                coinNames.add(cryptoCoins.get(i).getName());
-            }
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_expandable_list_item_1, coinNames);
+            recyclerView.setAdapter(adapter);
 
-            setListAdapter(adapter);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(contextOfApplication);
+            recyclerView.setLayoutManager(layoutManager);
+
+//            recyclerView.setHasFixedSize(true); ONLY IF THE LIST IS A FIXED SIZED!
+
 
             if (progressDialog != null) {
                 try {

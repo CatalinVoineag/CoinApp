@@ -14,6 +14,24 @@ public class Coin implements Serializable {
     private int rank;
     private float price_usd;
     private float price_btc;
+    private float holdings;
+    private boolean alert;
+
+    public boolean getAlert() {
+        return alert;
+    }
+
+    public void setAlert(boolean alert) {
+        this.alert = alert;
+    }
+
+    public float getHoldings() {
+        return holdings;
+    }
+
+    public void setHoldings(float holdings) {
+        this.holdings = holdings;
+    }
 
     public String getId() {
         return id;
