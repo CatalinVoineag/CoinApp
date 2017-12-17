@@ -1,12 +1,15 @@
 package catalin.coinnews.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
 /**
  * Created by catalin on 02/12/17.
  */
 
-public class Coin implements Serializable {
+public class Coin implements Parcelable {
 
     private String id;
     private String name;
@@ -14,8 +17,16 @@ public class Coin implements Serializable {
     private int rank;
     private float price_usd;
     private float price_btc;
-    private float holdings;
+    private Holding[] holdings;
     private boolean alert;
+
+    public Holding[] getHoldings() {
+        return holdings;
+    }
+
+    public void setHoldings(Holding[] holdings) {
+        this.holdings = holdings;
+    }
 
     public boolean getAlert() {
         return alert;
@@ -23,14 +34,6 @@ public class Coin implements Serializable {
 
     public void setAlert(boolean alert) {
         this.alert = alert;
-    }
-
-    public float getHoldings() {
-        return holdings;
-    }
-
-    public void setHoldings(float holdings) {
-        this.holdings = holdings;
     }
 
     public String getId() {
@@ -80,4 +83,42 @@ public class Coin implements Serializable {
     public void setPrice_btc(float price_btc) {
         this.price_btc = price_btc;
     }
+
+    public Coin() {}
+
+    @Override
+    public int describeContents() {
+        return 0; // Don't need
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(name);
+        parcel.writeString(symbol);
+        parcel.writeInt(rank);
+        parcel.writeFloat(price_usd);
+        parcel.writeFloat(price_btc);
+    }
+
+    protected Coin(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        symbol = in.readString();
+        rank = in.readInt();
+        price_usd = in.readFloat();
+        price_btc = in.readFloat();
+    }
+
+    public static final Creator<Coin> CREATOR = new Creator<Coin>() {
+        @Override
+        public Coin createFromParcel(Parcel parcel) {
+            return new Coin(parcel);
+        }
+
+        @Override
+        public Coin[] newArray(int i) {
+            return new Coin[i];
+        }
+    };
 }

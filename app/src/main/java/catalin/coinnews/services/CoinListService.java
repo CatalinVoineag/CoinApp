@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import catalin.coinnews.models.Coin;
 
 /**
- * Created by catalin on 17/12/17.
+ * Created by catalin on 02/12/17.
  */
 
-public interface CoinService {
+public interface CoinListService {
 
-    Coin getCoin(String symbol) throws IOException, NetworkErrorException, JSONException;
+    ArrayList<Coin> getCoins() throws IOException, NetworkErrorException, JSONException;
 
 }

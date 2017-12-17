@@ -1,16 +1,17 @@
 package catalin.coinnews.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import catalin.coinnews.CoinShowActivity;
 import catalin.coinnews.MainActivity;
 import catalin.coinnews.R;
 import catalin.coinnews.models.Coin;
@@ -19,13 +20,13 @@ import catalin.coinnews.models.Coin;
  * Created by catalin on 16/12/17.
  */
 
-public class CoinList extends RecyclerView.Adapter<CoinList.ViewHolder>{
+public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ViewHolder>{
 
     private Context context;
     private ArrayList<Coin> coins;
     private ViewHolder holder;
 
-    public CoinList(Context mContext, ArrayList<Coin> cryptoCoins) {
+    public CoinListAdapter(Context mContext, ArrayList<Coin> cryptoCoins) {
         context = mContext;
         coins = cryptoCoins;
     }
@@ -77,8 +78,10 @@ public class CoinList extends RecyclerView.Adapter<CoinList.ViewHolder>{
 
         @Override
         public void onClick(View view) {
-            String price = String.format("Price of %s is %s$", nameField.getText(), priceField.getText());
-            Toast.makeText(context, price, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(context, CoinShowActivity.class);
+            String coinName = coins.get(this.getLayoutPosition()).getName().toLowerCase();
+            intent.putExtra("coinName", coinName);
+            context.startActivity(intent);
         }
     }
 }
