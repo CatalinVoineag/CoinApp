@@ -20,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import catalin.coinnews.adapters.CoinListAdapter;
+import catalin.coinnews.database.DataSource;
 import catalin.coinnews.models.Coin;
 import catalin.coinnews.services.CoinListService;
 import catalin.coinnews.services.CoinListServiceImpl;
@@ -42,6 +43,12 @@ public class MainActivity extends Activity {
 
         new getData().execute();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        DataSource dataSource = new DataSource(getApplicationContext());
     }
 
     public static Context getContextOfApplication(){
@@ -84,6 +91,11 @@ public class MainActivity extends Activity {
             recyclerView.setLayoutManager(layoutManager);
 
 //            recyclerView.setHasFixedSize(true); ONLY IF THE LIST IS A FIXED SIZED!
+
+            for(Coin coin: coins) {
+                DataSource dataSource = new DataSource(contextOfApplication);
+                dataSource.create(coin);
+            }
 
 
             if (progressDialog != null) {

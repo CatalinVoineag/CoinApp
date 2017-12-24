@@ -1,5 +1,9 @@
 package catalin.coinnews.models;
 
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.BaseColumns;
+
 import java.util.Date;
 
 /**
@@ -44,4 +48,5 @@ public class Holding {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
 }
