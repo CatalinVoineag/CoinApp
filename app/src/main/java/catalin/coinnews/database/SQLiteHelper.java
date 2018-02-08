@@ -24,7 +24,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
 
-    public static String CREATE_HOLDINGS = "CREATE_TABLE " + HOLDING_TABLE + "("
+    public static String CREATE_HOLDINGS = "CREATE TABLE " + HOLDING_TABLE + "("
             + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             QTY + " INTEGER," +
             TRADE_PRICE + " INTEGER," +
@@ -40,7 +40,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public static final String PRICE_BTC = "PRICE_BTC";
     public static final String ALERT = "ALERT";
 
-    public static String CREATE_COINS = "CREATE_TABLE " + COIN_TABLE + "("
+    public static String CREATE_COINS = "CREATE TABLE " + COIN_TABLE + "("
             + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             COIN_NAME+ " STRING," +
             COIN_SYMBOL + " STRING," +
@@ -53,7 +53,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
+        sqLiteDatabase.execSQL(CREATE_COINS);
+//        sqLiteDatabase.execSQL(CREATE_HOLDINGS);
     }
 
     @Override

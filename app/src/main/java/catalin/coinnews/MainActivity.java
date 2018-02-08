@@ -14,6 +14,7 @@ import android.widget.Button;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -32,6 +33,7 @@ public class MainActivity extends Activity {
     private ProgressDialog progressDialog;
     private ArrayList<Coin> cryptoCoins;
     private RecyclerView recyclerView;
+    private DataSource dataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class MainActivity extends Activity {
         contextOfApplication = getApplicationContext();
         recyclerView = findViewById(R.id.coinListRecycle);
         ButterKnife.bind(this);
+        dataSource = new DataSource(getApplicationContext());
 
         new getData().execute();
 
@@ -48,7 +51,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        DataSource dataSource = new DataSource(getApplicationContext());
     }
 
     public static Context getContextOfApplication(){
@@ -78,24 +80,25 @@ public class MainActivity extends Activity {
                 e.printStackTrace();
             }
             return coins;
+
         }
 
         protected void onPostExecute(ArrayList<Coin> coins) {
             cryptoCoins = coins;
+            if (dataSource.readCoins().isEmpty()) {
+                for(Coin coin: coins) {
+                    dataSource.create(coin);
+                }
+            }
 
-            CoinListAdapter adapter = new CoinListAdapter(contextOfApplication, cryptoCoins);
-
+            CoinListAdapter adapter = new CoinListAdapter(contextOfApplication, dataSource.readCoins());
+//
             recyclerView.setAdapter(adapter);
 
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(contextOfApplication);
             recyclerView.setLayoutManager(layoutManager);
 
 //            recyclerView.setHasFixedSize(true); ONLY IF THE LIST IS A FIXED SIZED!
-
-            for(Coin coin: coins) {
-                DataSource dataSource = new DataSource(contextOfApplication);
-                dataSource.create(coin);
-            }
 
 
             if (progressDialog != null) {

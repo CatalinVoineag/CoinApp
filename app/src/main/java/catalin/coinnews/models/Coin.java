@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 public class Coin implements Parcelable {
 
-    private String id;
+    private int id;
     private String name;
     private String symbol;
     private int rank;
@@ -19,6 +19,13 @@ public class Coin implements Parcelable {
     private float price_btc;
     private Holding[] holdings;
     private boolean alert;
+
+    public Coin(int mId, String mName, String mSymbol, int mRank) {
+        id = mId;
+        name = mName;
+        symbol = mSymbol;
+        rank = mRank;
+    }
 
     public Holding[] getHoldings() {
         return holdings;
@@ -36,11 +43,11 @@ public class Coin implements Parcelable {
         this.alert = alert;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -93,7 +100,7 @@ public class Coin implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(id);
+        parcel.writeInt(id);
         parcel.writeString(name);
         parcel.writeString(symbol);
         parcel.writeInt(rank);
@@ -102,7 +109,7 @@ public class Coin implements Parcelable {
     }
 
     protected Coin(Parcel in) {
-        id = in.readString();
+        id = in.readInt();
         name = in.readString();
         symbol = in.readString();
         rank = in.readInt();

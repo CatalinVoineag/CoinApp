@@ -30,7 +30,7 @@ public class CoinServiceImpl extends Service implements CoinService {
             JSONArray jsonArray = new JSONArray(jsonData);
             JSONObject jsonObject = new JSONObject(jsonArray.get(0).toString());
             // FIX PRICE FLOAT ISSUE!
-            coin.setId(jsonObject.getString("id"));
+            coin.setId(Integer.valueOf(jsonObject.getString("id")));
             coin.setPrice_usd(Float.parseFloat(jsonObject.getString("price_usd")));
             coin.setPrice_btc(Float.parseFloat(jsonObject.getString("price_btc")));
             coin.setName(jsonObject.getString("name"));

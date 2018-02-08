@@ -35,7 +35,8 @@ public class CoinListServiceImpl extends Service implements CoinListService {
             for (int i=0; i<jsonArray.length(); i++) {
                 coin = new Coin();
                 JSONObject jsonObj = new JSONObject(jsonArray.get(i).toString());
-                coin.setId(jsonObj.getString("id"));
+//                coin.setId(Integer.valueOf(jsonObj.getString("id")));
+                coin.setId(i);
                 coin.setName(jsonObj.getString("name"));
                 coin.setSymbol(jsonObj.getString("symbol"));
                 coin.setRank(Integer.parseInt(jsonObj.getString("rank")));
