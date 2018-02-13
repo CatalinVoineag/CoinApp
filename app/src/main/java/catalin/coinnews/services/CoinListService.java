@@ -7,6 +7,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import catalin.coinnews.managers.CoinManager;
 import catalin.coinnews.models.Coin;
 
 /**
@@ -15,6 +16,6 @@ import catalin.coinnews.models.Coin;
 
 public interface CoinListService {
 
-    ArrayList<Coin> getCoins() throws IOException, NetworkErrorException, JSONException;
+    CoinManager getCoins() throws IOException, NetworkErrorException, JSONException;
 
 }

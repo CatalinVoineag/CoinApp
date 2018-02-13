@@ -9,7 +9,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import catalin.coinnews.managers.CoinManager;
 import catalin.coinnews.models.Coin;
+import catalin.coinnews.models.CoinList;
 import okhttp3.Response;
 
 /**
@@ -18,7 +20,7 @@ import okhttp3.Response;
 
 public class CoinListServiceImpl extends Service implements CoinListService {
     @Override
-    public ArrayList getCoins() throws IOException, NetworkErrorException, JSONException {
+    public CoinManager getCoins() throws IOException, NetworkErrorException, JSONException {
         String url = "https://api.coinmarketcap.com/v1/ticker/?limit=10";
         JSONObject obj = new JSONObject();
         Response response = this.consumeService(url, obj, "GET");
@@ -26,6 +28,7 @@ public class CoinListServiceImpl extends Service implements CoinListService {
 
 
         ArrayList<Coin> coins = new ArrayList<>();
+        CoinManager manager = null;
 
         if (result) {
             final String jsonData = response.body().string();
@@ -45,8 +48,12 @@ public class CoinListServiceImpl extends Service implements CoinListService {
 
                 coins.add(coin);
             }
+            manager = new CoinManager();
+            CoinList coinList = new CoinList();
+            coinList.setCoins(coins);
+            manager.setCoinList(coinList);
         }
-        return coins;
+        return manager;
     }
 }
 

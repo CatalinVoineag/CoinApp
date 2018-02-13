@@ -12,8 +12,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import catalin.coinnews.CoinShowActivity;
-import catalin.coinnews.MainActivity;
 import catalin.coinnews.R;
+import catalin.coinnews.database.DataSource;
 import catalin.coinnews.models.Coin;
 
 /**
@@ -25,10 +25,12 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ViewHo
     private Context context;
     private ArrayList<Coin> coins;
     private ViewHolder holder;
+    private DataSource dataSource;
 
     public CoinListAdapter(Context mContext, ArrayList<Coin> cryptoCoins) {
         context = mContext;
         coins = cryptoCoins;
+        dataSource = new DataSource(context);
     }
 
     @Override
@@ -58,30 +60,43 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ViewHo
         private TextView nameField;
         private TextView priceField;
         private TextView holdingsField;
-        private TextView alertField;
+        private TextView favoriteField;
         public ViewHolder(View itemView) {
             super(itemView);
             nameField = (TextView) itemView.findViewById(R.id.coinName);
             priceField = (TextView) itemView.findViewById(R.id.price);
             holdingsField = (TextView) itemView.findViewById(R.id.holdings);
-            alertField = (TextView) itemView.findViewById(R.id.alert);
+            favoriteField = (TextView) itemView.findViewById(R.id.favorite);
 
             itemView.setOnClickListener(this);
+            favoriteField.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, "hahaha", Toast.LENGTH_SHORT).show();
+                    dataSource.create(coins.get(getPosition()));
+                    System.out.println("AHAHHAHAHHA");
+                }
+
+
+            });
         }
 
         public void bindData(Coin coin) {
             nameField.setText(coin.getName());
             priceField.setText(String.valueOf(coin.getPrice_usd()));
             holdingsField.setText(String.valueOf(coin.getHoldings()));
-            alertField.setText(coin.getAlert() ? "True" : "False");
+
+//            favoriteField.setText(coin.getAlert() ? "True" : "False");
         }
 
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(context, CoinShowActivity.class);
-            String coinName = coins.get(this.getLayoutPosition()).getName().toLowerCase();
-            intent.putExtra("coinName", coinName);
-            context.startActivity(intent);
+//            Intent intent = new Intent(context, CoinShowActivity.class);
+//            String coinName = coins.get(this.getLayoutPosition()).getName().toLowerCase();
+//            intent.putExtra("coinName", coinName);
+//            context.startActivity(intent);
+            Toast.makeText(context, "FUCK!", Toast.LENGTH_SHORT).show();
         }
+
     }
 }

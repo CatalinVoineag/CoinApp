@@ -42,8 +42,7 @@ public class DataSource {
         coinValues.put(SQLiteHelper.COIN_SYMBOL, coin.getSymbol());
         coinValues.put(SQLiteHelper.RANK, coin.getRank());
         coinValues.put(SQLiteHelper.PRICE_USD, coin.getPrice_usd());
-        coinValues.put(SQLiteHelper.PRICE_BTC, coin.getPrice_btc());
-        coinValues.put(SQLiteHelper.ALERT, coin.getAlert() ? 1 : 0);
+//        coinValues.put(SQLiteHelper.PRICE_BTC, coin.getPrice_btc());
         long CoinID = database.insert(SQLiteHelper.COIN_TABLE, null, coinValues);
 
         database.setTransactionSuccessful();
@@ -74,6 +73,18 @@ public class DataSource {
         cursor.close();
         close(database);
         return coins;
+    }
+
+    public void update(Coin coin, int ID) {
+        SQLiteDatabase database = open();
+        database.beginTransaction();
+
+        ContentValues updateCoinValues = new ContentValues();
+        database.update(SQLiteHelper.COIN_TABLE, updateCoinValues, String.format("%s=%d", BaseColumns._ID, ID), null);
+
+        database.setTransactionSuccessful();
+        database.endTransaction();
+        database.close();
     }
 
     private int getIntFromColumnName(Cursor cursor, String columnName) {

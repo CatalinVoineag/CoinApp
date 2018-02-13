@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="coinTab" type="id">coinTabId</item>
+    <item name="favoriteTab" type="id">favoriteTabId</item>
+
+</resources>
