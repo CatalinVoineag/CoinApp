@@ -32,8 +32,8 @@ public class CoinServiceImpl extends Service implements CoinService {
             // FIX PRICE FLOAT ISSUE!
 //            coin.setId(Integer.valueOf(jsonObject.getString("id")));
             
-            coin.setPrice_usd(Float.parseFloat(jsonObject.getString("price_usd")));
-            coin.setPrice_btc(Float.parseFloat(jsonObject.getString("price_btc")));
+            coin.setPriceUsd(Float.parseFloat(jsonObject.getString("price_usd")));
+            coin.setPriceBtc(Float.parseFloat(jsonObject.getString("price_btc")));
             coin.setName(jsonObject.getString("name"));
             coin.setRank(Integer.parseInt(jsonObject.getString("rank")));
             coin.setSymbol(jsonObject.getString("symbol"));

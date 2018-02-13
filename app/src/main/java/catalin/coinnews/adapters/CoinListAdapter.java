@@ -1,7 +1,7 @@
 package catalin.coinnews.adapters;
 
+import android.arch.persistence.room.Room;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +11,11 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import catalin.coinnews.CoinShowActivity;
+import catalin.coinnews.AppDatabase;
 import catalin.coinnews.R;
 import catalin.coinnews.database.DataSource;
 import catalin.coinnews.models.Coin;
+import catalin.coinnews.models.FavoriteCoin;
 
 /**
  * Created by catalin on 16/12/17.
@@ -25,12 +26,12 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ViewHo
     private Context context;
     private ArrayList<Coin> coins;
     private ViewHolder holder;
-    private DataSource dataSource;
+    private AppDatabase db;
 
     public CoinListAdapter(Context mContext, ArrayList<Coin> cryptoCoins) {
         context = mContext;
         coins = cryptoCoins;
-        dataSource = new DataSource(context);
+        db = Room.databaseBuilder(context, AppDatabase.class, "production").allowMainThreadQueries().build();
     }
 
     @Override
@@ -72,19 +73,19 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ViewHo
             favoriteField.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, "hahaha", Toast.LENGTH_SHORT).show();
-                    dataSource.create(coins.get(getPosition()));
-                    System.out.println("AHAHHAHAHHA");
+                    Coin coin = coins.get(getPosition());
+                    FavoriteCoin favCoin = new FavoriteCoin(coin.getName(), coin.getSymbol(), coin.getRank(), coin.getPriceUsd(), coin.getPriceBtc());
+                    db.favoriteCoinDao().insertAll(favCoin);
+                    FavoriteCoin favCoin2 = db.favoriteCoinDao().getAll().get(0);
+                    Toast.makeText(context, favCoin2.getName(), Toast.LENGTH_SHORT).show();
                 }
-
-
             });
         }
 
         public void bindData(Coin coin) {
             nameField.setText(coin.getName());
-            priceField.setText(String.valueOf(coin.getPrice_usd()));
-            holdingsField.setText(String.valueOf(coin.getHoldings()));
+            priceField.setText(String.valueOf(coin.getPriceUsd()));
+//            holdingsField.setText(String.valueOf(coin.getHoldings()));
 
 //            favoriteField.setText(coin.getAlert() ? "True" : "False");
         }

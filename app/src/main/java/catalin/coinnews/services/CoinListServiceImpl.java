@@ -43,8 +43,8 @@ public class CoinListServiceImpl extends Service implements CoinListService {
                 coin.setName(jsonObj.getString("name"));
                 coin.setSymbol(jsonObj.getString("symbol"));
                 coin.setRank(Integer.parseInt(jsonObj.getString("rank")));
-                coin.setPrice_usd(Float.parseFloat(jsonObj.getString("price_usd")));
-                coin.setPrice_btc(Float.parseFloat(jsonObj.getString("price_btc")));
+                coin.setPriceUsd(Float.parseFloat(jsonObj.getString("price_usd")));
+                coin.setPriceBtc(Float.parseFloat(jsonObj.getString("price_btc")));
 
                 coins.add(coin);
             }

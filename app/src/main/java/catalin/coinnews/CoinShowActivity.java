@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import catalin.coinnews.models.Coin;
 import catalin.coinnews.services.CoinService;
 import catalin.coinnews.services.CoinServiceImpl;
@@ -92,8 +91,8 @@ public class CoinShowActivity extends Activity {
             if (coin != null) {
                 cryptoCoin = coin;
                 coinNameField.setText(coin.getName());
-                coinPriceUSDField.setText(String.valueOf(coin.getPrice_usd()));
-                coinPriceBTCField.setText(String.valueOf(coin.getPrice_btc()));
+                coinPriceUSDField.setText(String.valueOf(coin.getPriceUsd()));
+                coinPriceBTCField.setText(String.valueOf(coin.getPriceBtc()));
             } else {
                 // Handle Error
             }

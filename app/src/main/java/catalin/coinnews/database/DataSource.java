@@ -41,8 +41,8 @@ public class DataSource {
         coinValues.put(SQLiteHelper.COIN_NAME, coin.getName());
         coinValues.put(SQLiteHelper.COIN_SYMBOL, coin.getSymbol());
         coinValues.put(SQLiteHelper.RANK, coin.getRank());
-        coinValues.put(SQLiteHelper.PRICE_USD, coin.getPrice_usd());
-//        coinValues.put(SQLiteHelper.PRICE_BTC, coin.getPrice_btc());
+        coinValues.put(SQLiteHelper.PRICE_USD, coin.getPriceUsd());
+//        coinValues.put(SQLiteHelper.PRICE_BTC, coin.getPriceBtc());
         long CoinID = database.insert(SQLiteHelper.COIN_TABLE, null, coinValues);
 
         database.setTransactionSuccessful();
