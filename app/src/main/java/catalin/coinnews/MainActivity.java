@@ -3,6 +3,7 @@ package catalin.coinnews;
 import android.accounts.NetworkErrorException;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,10 +25,12 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import catalin.coinnews.adapters.CoinListAdapter;
-import catalin.coinnews.database.DataSource;
+
 import catalin.coinnews.fragments.CoinListFragment;
 import catalin.coinnews.managers.CoinManager;
 import catalin.coinnews.models.Coin;
+import catalin.coinnews.models.CoinList;
+import catalin.coinnews.models.FavoriteCoin;
 import catalin.coinnews.services.CoinListService;
 import catalin.coinnews.services.CoinListServiceImpl;
 
@@ -38,20 +41,20 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private ArrayList<Coin> cryptoCoins;
     private RecyclerView recyclerView;
-    private DataSource dataSource;
+
     private FragmentTabHost mTabHost;
     public static int currentTab;
     private CoinManager coinManager;
     private getData task;
+    private AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         contextOfApplication = getApplicationContext();
-//        recyclerView = findViewById(R.id.coinListRecycle);
         ButterKnife.bind(this);
-        dataSource = new DataSource(getApplicationContext());
+        db = Room.databaseBuilder(contextOfApplication, AppDatabase.class, "production").allowMainThreadQueries().build();
 
     }
 
@@ -168,7 +171,12 @@ public class MainActivity extends AppCompatActivity {
             setupTab(new TextView(this), "Coins", b, R.id.coinTab);
 
             Bundle b2 = new Bundle();
-            b2.putSerializable(CoinListFragment.FAVORITE_LIST, coinManager.getCoinList());
+            CoinList favCoinList = new CoinList();
+            favCoinList.setFavCoins((ArrayList<FavoriteCoin>) db.favoriteCoinDao().getAll());
+            b2.putSerializable(CoinListFragment.FAVORITE_LIST, favCoinList);
+//            for (FavoriteCoin favCoin : {
+////                coinList.add
+//            }
             setupTab(new TextView(this), "Favorites", b2, R.id.favoriteTab);
 
             mTabHost.setCurrentTab(currentTab);

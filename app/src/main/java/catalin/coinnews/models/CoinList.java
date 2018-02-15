@@ -12,6 +12,15 @@ import catalin.coinnews.managers.CoinManager;
 public class CoinList extends CoinManager implements Serializable {
 
     private ArrayList<Coin> coins;
+    private ArrayList<FavoriteCoin> favCoins;
+
+    public ArrayList<FavoriteCoin> getFavCoins() {
+        return favCoins;
+    }
+
+    public void setFavCoins(ArrayList<FavoriteCoin> favCoins) {
+        this.favCoins = favCoins;
+    }
 
     public ArrayList<Coin> getCoins() {
         return coins;

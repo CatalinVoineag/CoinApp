@@ -1,7 +1,9 @@
 package catalin.coinnews.adapters;
 
+import android.annotation.SuppressLint;
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.database.sqlite.SQLiteConstraintException;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +15,6 @@ import java.util.ArrayList;
 
 import catalin.coinnews.AppDatabase;
 import catalin.coinnews.R;
-import catalin.coinnews.database.DataSource;
 import catalin.coinnews.models.Coin;
 import catalin.coinnews.models.FavoriteCoin;
 
@@ -71,13 +72,21 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ViewHo
 
             itemView.setOnClickListener(this);
             favoriteField.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("NewApi")
                 @Override
                 public void onClick(View view) {
                     Coin coin = coins.get(getPosition());
                     FavoriteCoin favCoin = new FavoriteCoin(coin.getName(), coin.getSymbol(), coin.getRank(), coin.getPriceUsd(), coin.getPriceBtc());
-                    db.favoriteCoinDao().insertAll(favCoin);
-                    FavoriteCoin favCoin2 = db.favoriteCoinDao().getAll().get(0);
-                    Toast.makeText(context, favCoin2.getName(), Toast.LENGTH_SHORT).show();
+                    if (db.favoriteCoinDao().findByName(coin.getName().toString()) != null) {
+                        favoriteField.setBackground(context.getResources().getDrawable(R.drawable.ic_favorite_border_black_24dp, null));
+                        db.favoriteCoinDao().delete(db.favoriteCoinDao().findByName(coin.getName()));
+                    } else {
+                        try {db.favoriteCoinDao().insertAll(favCoin);}
+                        catch (SQLiteConstraintException e) {
+                            Toast.makeText(context, db.favoriteCoinDao().findByName(coin.getName()).getName().toString(), Toast.LENGTH_SHORT).show();
+                        }
+                        favoriteField.setBackground(context.getResources().getDrawable(R.drawable.ic_favorite_black_24dp, null));
+                    }
                 }
             });
         }

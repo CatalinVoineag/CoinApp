@@ -3,6 +3,7 @@ package catalin.coinnews.managers;
 import java.io.Serializable;
 
 import catalin.coinnews.models.CoinList;
+import catalin.coinnews.models.FavoriteCoin;
 
 /**
  * Created by catalin on 10/02/18.
@@ -11,12 +12,21 @@ import catalin.coinnews.models.CoinList;
 public class CoinManager implements Serializable {
 
     private CoinList coinList;
+    private FavoriteCoin favCoinList;
 
     private String title;
     private String tab1;
     private String tab2;
 
     private int scrollTo = 0;
+
+    public FavoriteCoin getFavCoinList() {
+        return favCoinList;
+    }
+
+    public void setFavCoinList(FavoriteCoin favCoinList) {
+        this.favCoinList = favCoinList;
+    }
 
     public CoinList getCoinList() {
         return coinList;

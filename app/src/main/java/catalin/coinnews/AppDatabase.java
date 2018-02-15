@@ -13,4 +13,3 @@ import catalin.coinnews.models.FavoriteCoin;
         public abstract class AppDatabase extends RoomDatabase {
         public abstract FavoriteCoinDao favoriteCoinDao();
     }
-

@@ -28,6 +28,7 @@ import catalin.coinnews.R;
 import catalin.coinnews.adapters.CoinListAdapter;
 import catalin.coinnews.models.Coin;
 import catalin.coinnews.models.CoinList;
+import catalin.coinnews.models.FavoriteCoin;
 
 /**
  * Created by catalin on 10/02/18.

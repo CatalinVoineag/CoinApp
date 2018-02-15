@@ -20,14 +20,18 @@ public interface FavoriteCoinDao {
     @Query("SELECT * FROM favorite_coins")
     List<FavoriteCoin> getAll();
 
-//    @Query("SELECT * FROM favorite_coins WHERE id IN (:favoriteCoinIds)")
-//    List<FavoriteCoin> loadAllByIds(int[] favoriteCoinIds);
-//
-//    @Query("SELECT * FROM favorite_coin WHERE first_name LIKE :first AND "
-//            + "last_name LIKE :last LIMIT 1")
-//    FavoriteCoin findByName(String first, String last);
+    @Query("SELECT * FROM favorite_coins WHERE id IN (:favoriteCoinIds)")
+    List<FavoriteCoin> findByIds(int[] favoriteCoinIds);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+
+    @Query("SELECT * FROM favorite_coins WHERE id IS :id")
+    FavoriteCoin findById(int id);
+
+
+    @Query("SELECT * FROM favorite_coins WHERE name LIKE :name LIMIT 1")
+    FavoriteCoin findByName(String name);
+
+    @Insert
     void insertAll(FavoriteCoin... favoriteCoins);
 
     @Delete

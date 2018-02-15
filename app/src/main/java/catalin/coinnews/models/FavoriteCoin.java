@@ -2,15 +2,18 @@ package catalin.coinnews.models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
  * Created by catalin on 13/02/18.
  */
-@Entity(tableName = "favorite_coins")
+@Entity(tableName = "favorite_coins", indices = {@Index(value = {"name"},
+        unique = true)})
 public class FavoriteCoin {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
+
     @ColumnInfo(name="name")
     private String name;
     @ColumnInfo(name="symbol")

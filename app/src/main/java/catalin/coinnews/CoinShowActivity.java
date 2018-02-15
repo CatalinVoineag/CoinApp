@@ -48,16 +48,16 @@ public class CoinShowActivity extends Activity {
 
         new getData().execute();
 
-        holdings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(CoinShowActivity.this, HoldingActivity.class);
-                ArrayList<Coin> coinArray = new ArrayList<Coin>();
-                coinArray.add(cryptoCoin);
-                intent.putParcelableArrayListExtra(COIN, coinArray);
-                startActivities(new Intent[]{intent});
-            }
-        });
+//        holdings.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(CoinShowActivity.this, HoldingActivity.class);
+//                ArrayList<Coin> coinArray = new ArrayList<Coin>();
+//                coinArray.add(cryptoCoin);
+//                intent.putParcelableArrayListExtra(COIN, coinArray);
+//                startActivities(new Intent[]{intent});
+//            }
+//        });
     }
 
     class getData extends AsyncTask<String, Void, Coin> {
