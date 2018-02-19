@@ -166,17 +166,10 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             Bundle b = new Bundle();
-//            b.putSerializable(ScheduleListFragment.SCHEDULE_LIST, pickingList);
             b.putSerializable(CoinListFragment.COIN_LIST, coinManager.getCoinList());
             setupTab(new TextView(this), "Coins", b, R.id.coinTab);
 
             Bundle b2 = new Bundle();
-            CoinList favCoinList = new CoinList();
-            favCoinList.setFavCoins((ArrayList<FavoriteCoin>) db.favoriteCoinDao().getAll());
-            b2.putSerializable(CoinListFragment.FAVORITE_LIST, favCoinList);
-//            for (FavoriteCoin favCoin : {
-////                coinList.add
-//            }
             setupTab(new TextView(this), "Favorites", b2, R.id.favoriteTab);
 
             mTabHost.setCurrentTab(currentTab);
@@ -192,6 +185,8 @@ public class MainActivity extends AppCompatActivity {
             public void onTabChanged(String tabId) {
             System.out.println("LISTENER" + Integer.toString(mTabHost.getCurrentTab()));
             MainActivity.currentTab = mTabHost.getCurrentTab();
+
+
             }
         });
     }

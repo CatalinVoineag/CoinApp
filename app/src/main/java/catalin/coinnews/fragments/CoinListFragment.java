@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -24,6 +25,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import catalin.coinnews.AppDatabase;
 import catalin.coinnews.R;
 import catalin.coinnews.adapters.CoinListAdapter;
 import catalin.coinnews.models.Coin;
@@ -47,6 +49,7 @@ public class CoinListFragment extends android.support.v4.app.Fragment {
     private RecyclerView lv;
     private Coin coins;
     private String tabTag;
+    private AppDatabase db;
 
     @SuppressLint("NewApi")
     @Override
@@ -55,22 +58,22 @@ public class CoinListFragment extends android.support.v4.app.Fragment {
         tabTag = getTag();
         if (tabTag.equals("Coins")) {
             list = (catalin.coinnews.models.CoinList) getArguments().getSerializable(COIN_LIST);
-        } else {
-            list = (catalin.coinnews.models.CoinList) getArguments().getSerializable(FAVORITE_LIST);
+//        } else {
+//            list = (catalin.coinnews.models.CoinList) getArguments().getSerializable(FAVORITE_LIST);
         }
 
         tabId = getArguments().getInt("tabId");
         context = getContext();
         mActivity = getActivity();
         setRetainInstance(true);
+        db = Room.databaseBuilder(context, AppDatabase.class, "production").allowMainThreadQueries().build();
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.coin_list, container, false);
 //        loadMore = (Button) view.findViewById(R.id.loadMore);
-
-        loadListView(list);
 
 
 //        loadMore.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +101,11 @@ public class CoinListFragment extends android.support.v4.app.Fragment {
     @Override
     public void onResume(){
         super.onResume();
+        if (tabTag.equals("Favorites")) {
+            CoinList coinList = new CoinList();
+            coinList.setCoins((ArrayList<Coin>) db.coinDao().getAll());
+            list = coinList;
+        }
         loadListView(list);
     }
 
@@ -111,8 +119,9 @@ public class CoinListFragment extends android.support.v4.app.Fragment {
 
 
 
-        CoinListAdapter adapter = new CoinListAdapter(context, list.getCoins());
+        CoinListAdapter adapter = new CoinListAdapter(context, list.getCoins(), tabTag);
         lv.setAdapter(adapter);
+
 //
 //            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(contextOfApplication);
 //            recyclerView.setLayoutManager(layoutManager);
